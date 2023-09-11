@@ -25,13 +25,18 @@ void main() {
       // arrange
       when(() => mockNumberTriviaRepository.getConcreteNumberTrivia(any()))
           .thenAnswer((_) async => const Right(tNumberTrivia));
+
       // act
-      final result = await usecase.execute(number: tNumber);
+      // callable class, so we can simply call it like a function
+      final result = await usecase(number: tNumber);
+
       // assert
       // UseCase should simply return whatever was returned from the Repository
       expect(result, const Right(tNumberTrivia));
+
       // Verify that the method has been called on the Repository
       verify(() => mockNumberTriviaRepository.getConcreteNumberTrivia(tNumber));
+
       // Only the above method should be called and nothing more.
       verifyNoMoreInteractions(mockNumberTriviaRepository);
     },
